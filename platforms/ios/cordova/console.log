@@ -1,0 +1,36 @@
+2014-08-21 15:21:00.574 GasBoy[2623:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 15:21:00.601 GasBoy[2623:70b] Unlimited access to network resources
+2014-08-21 15:21:00.614 GasBoy[2623:70b] Fix applied for database locations?: YES
+2014-08-21 15:21:00.615 GasBoy[2623:70b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 15:21:00.811 GasBoy[2623:70b] [CDVTimer][file] 1.463950ms
+2014-08-21 15:21:00.871 GasBoy[2623:70b] [CDVTimer][splashscreen] 58.849037ms
+2014-08-21 15:21:00.871 GasBoy[2623:70b] [CDVTimer][localnotification] 0.036001ms
+2014-08-21 15:21:00.871 GasBoy[2623:70b] [CDVTimer][notification] 0.042975ms
+2014-08-21 15:21:00.872 GasBoy[2623:70b] [CDVTimer][logger] 0.028014ms
+2014-08-21 15:21:00.872 GasBoy[2623:70b] [CDVTimer][TotalPluginStartup] 62.232971ms
+2014-08-21 15:21:01.009 GasBoy[2623:70b] Resetting plugins due to page load.
+2014-08-21 15:21:01.278 GasBoy[2623:70b] Finished load of: file:///Users/jabbott/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/A67F321E-6B54-4E4D-B1D3-E70EC70384DF/GasBoy.app/www/index.html
+2014-08-21 15:21:34.149 GasBoy[2983:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-21 15:21:34.155 GasBoy[2983:70b] Unlimited access to network resources
+2014-08-21 15:21:34.157 GasBoy[2983:70b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-21 15:21:34.170 GasBoy[2983:70b] [CDVTimer][file] 0.984013ms
+2014-08-21 15:21:34.179 GasBoy[2983:70b] [CDVTimer][splashscreen] 8.436024ms
+2014-08-21 15:21:34.179 GasBoy[2983:70b] [CDVTimer][localnotification] 0.033975ms
+2014-08-21 15:21:34.179 GasBoy[2983:70b] [CDVTimer][notification] 0.029027ms
+2014-08-21 15:21:34.180 GasBoy[2983:70b] [CDVTimer][logger] 0.030994ms
+2014-08-21 15:21:34.180 GasBoy[2983:70b] [CDVTimer][TotalPluginStartup] 11.057973ms
+2014-08-21 15:21:34.260 GasBoy[2983:70b] Resetting plugins due to page load.
+2014-08-21 15:21:34.409 GasBoy[2983:70b] Finished load of: file:///Users/jabbott/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/A67F321E-6B54-4E4D-B1D3-E70EC70384DF/GasBoy.app/www/index.html
+Terminating in response to SpringBoard's termination.

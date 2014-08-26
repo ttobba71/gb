@@ -1,0 +1,113 @@
+/* Panel positioning (for overlay and push) */
+/* Panel left closed */
+.ui-panel-position-left {
+	left: -5em;
+}
+.ui-panel {
+	width: 5em;
+	min-height: 100%;
+	max-height: none;
+	border-width: 0;
+	position: absolute;
+	top: 0;
+	display: block;
+}
+/* Panel right closed */
+.ui-panel-position-right {
+	right: -5em;
+}
+/* Wrapper and fixed toolbars positioning (for reveal and push) */
+/* Panel left open */
+.ui-panel-page-content-position-left {
+	left: 5em;
+	right: -5em;
+}
+/* Panel right open */
+.ui-panel-page-content-position-right {
+	left: -5em;
+	right: 5em;
+}
+/* Dismiss model open */
+.ui-panel-dismiss-open.ui-panel-dismiss-position-left {
+	left: 5em;
+}
+.ui-panel-dismiss-open.ui-panel-dismiss-position-right {
+	right: 5em;
+}
+/* Panel left closed animated */
+.ui-panel-animate.ui-panel-position-left.ui-panel-display-overlay,
+.ui-panel-animate.ui-panel-position-left.ui-panel-display-push {
+	left: 0;
+	-webkit-transform: translate3d(-5em,0,0);
+	-moz-transform: translate3d(-5em,0,0);
+	transform: translate3d(-5em,0,0);
+}
+/* Panel right closed animated */
+.ui-panel-animate.ui-panel-position-right.ui-panel-display-overlay,
+.ui-panel-animate.ui-panel-position-right.ui-panel-display-push {
+	right: 0;
+	-webkit-transform: translate3d(5em,0,0);
+	-moz-transform: translate3d(5em,0,0);
+	transform: translate3d(5em,0,0);
+}
+/* Panel left open animated */
+.ui-panel-animate.ui-panel-page-content-position-left {
+	left: 0;
+	right: 0;
+	-webkit-transform: translate3d(5em,0,0);
+	-moz-transform: translate3d(5em,0,0);
+	transform: translate3d(5em,0,0);
+}
+
+/* Panel right open animated */
+.ui-panel-animate.ui-panel-page-content-position-right {
+	left: 0;
+	right: 0;
+	-webkit-transform: translate3d(-5em,0,0);
+	-moz-transform: translate3d(-5em,0,0);
+	transform: translate3d(-5em,0,0);
+}
+
+/* Table Format */
+
+.price-list {
+	width: 95%;
+}
+.price-list thead th,
+.price-list tbody tr:last-child {
+    border-bottom: 1px solid #d6d6d6; /* non-RGBA fallback */
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    width: 30%;
+}
+.price-list tbody th,
+.price-list tbody td {
+    border-bottom: 1px solid #e6e6e6; /* non-RGBA fallback  */
+    border-bottom: 1px solid rgba(0,0,0,.05);
+        width: 30%;
+}
+.price-list tbody tr:last-child th,
+.price-list tbody tr:last-child td {
+    border-bottom: 0;
+}
+.price-list tbody tr:nth-child(odd) td,
+.price-list tbody tr:nth-child(odd) th {
+    background-color: #eeeeee; /* non-RGBA fallback  */
+    background-color: rgba(0,0,0,.04);
+}
+@media ( min-width: 10em ) {
+	/* Show the table header rows and set all cells to display: table-cell */
+	.my-custom-breakpoint td,
+	.my-custom-breakpoint th,
+	.my-custom-breakpoint tbody th,
+	.my-custom-breakpoint tbody td,
+	.my-custom-breakpoint thead td,
+	.my-custom-breakpoint thead th {
+		display: table-cell;
+		margin: 0;
+	}
+	/* Hide the labels in each cell */
+	.my-custom-breakpoint td .ui-table-cell-label,
+	.my-custom-breakpoint th .ui-table-cell-label {
+		display: none;
+	}
+}
