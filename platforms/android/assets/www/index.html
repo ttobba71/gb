@@ -1,227 +1,114 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="format-detection" content="telephone=no" />
-    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-    <meta name="viewport" content="width=device-width, height=device-height" />
-    <meta charset="utf-8">
-    <title>GasBoy Mobile</title>
-    <link rel="stylesheet" href="js/jquery.mobile-1.4.3.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    
-    <link rel="shortcut icon" href="img/favicon.ico">
-    <!--
-<script src="http://10.207.30.16:8080/target/target-script-min.js">
-</script>
--->
-    <script src="js/jquery.js"></script>
-    <script src="js/jquery.mobile-1.4.3.min.js"></script>
-    <script>
-            var result = 
-            	{
-            	LocalPrices:[{
-            	ReadDate: '',
-            	Price: '',
-            	LocationName: '',
-            	ReadDate: '',
-            	}],
-            	StatePrices: { 
-            		state: '',
-            		regular:'',
-            		mid:'',
-            		premium:'',
-            		diesel:''
-            	}}
- 
- 		  $(window).on("orientationchange",function(event){
-		    console.debug('orientation changed');
-		    //alert("Orientation changed to: " + event.orientation);
-		  });
-		  
-		function alertDismissed() {
-		    alert( 'dismissed');
-		}
-		function showAlert(){
-			//alert( 'in show alert...' );
-			console.debug('in show alert');
-			try{
-			navigator.notification.alert(
-			    'You are the winner!',  // message
-			    alertDismissed,         // callback
-			    'Game Over',            // title
-			    'Done'                  // buttonName
-			);
-			}catch(err){
-				logger.error('error in show alert..' + err.message);
-			}
-		}
-	/*	   
-		function AddLocalNotification(){
-			localNotifier.addNotification({
-				    fireDate        : Math.round(new Date().getTime()/1000 + 5),
-				    alertBody       : "This is a new local notification.",
-				    repeatInterval  : "daily",
-				    soundName       : "horn.caf",
-				    badge           : 1,
-				    notificationId  : 123,
-				    foreground      : function(notificationId){ 
-				        alert("Hello World forground! This alert was triggered by notification " + notificationId); 
-				    },
-				    background  : function(notificationId){
-				        alert("Hello World background! This alert was triggered by notification " + notificationId);
-				    }           
-				});	
-		}
-		*/
-		
-		function AddLocalNotification(){
-		
-		var now                  = new Date().getTime(),
-	    _10_seconds_from_now = new Date(now + 10*1000);
-	
-			window.plugin.notification.local.add({
-			    id:      1,
-			    title:   'Reminder',
-			    message: 'Dont forget to buy some flowers.',
-			    repeat:  'weekly',
-			    date:    _10_seconds_from_now
-			});	
-			
-		}
-		function getPriceData(){
-			console.debug('getPriceData..');
-	            var url = "http://crmweb.emersonnetworkpower.com/gasboy/api/prices";
-	                $.ajax({
-				        url: url,
-				        type: "GET",
-				        async: true,
-				        crossdomain: true,
-				        datatype: 'jsonp',
-				        cache: false,
-				        contentType: 'application/json',
-				        success: function( data ){ 
-	
-				        	try{
-				        	result = $.parseJSON(data);			        	
-				        	result.LocalPrices = $.parseJSON( result.LocalPrices );
-				        	result.StatePrices = $.parseJSON( result.StatePrices );
-
-				        	//$('#prices').empty();
-				        	$.each(result.LocalPrices, function (i, prices) {
-				        		var day = prices.ReadDate.split("T");
-				        		var time = day.length>1?day[1].split("."):'';
-	               				day = day.length>0?day[0]:'';
-
-								$('#prices').append('<tr><td>' + prices.LocationName + '</td><td>' + prices.Price + '</td><td>' + day + '</td></tr>');
-							
-	            			});	
-	            			$('gasTable').table("refresh");
-	            			
-	            			$('#statePrice').empty();
-	            			$('#statePrice').append('<h5>' + result.StatePrices.state + '</h5>');
-							$('#statePrice').append('<div class="ui-bar ui-mini" style="height:20px"><h6>Regular: ' + result.StatePrices.regular + '</h6></div>');
-							$('#statePrice').append('<div class="ui-bar ui-mini" style="height:20px"><h6>Mid: ' + result.StatePrices.mid + '</h6></div>');
-							$('#statePrice').append('<div class="ui-bar ui-mini" style="height:20px"><h6>Premium: ' + result.StatePrices.premium + '</h6></div>');
-							$('#statePrice').append('<div class="ui-bar ui-mini" style="height:20px"><h6>Diesel: ' + result.StatePrices.diesel + '</h6></div>');		        	
-				        	}
-				        	catch(err){
-				        		console.log('error');
-				        	}
-				        	},
-				        done: function() {alert('done'); },
-				        fail: function() {alert('fail'); },
-				        completed: function() { alert('completed')}
-				       
-				       
-				    });
-			}
-		
-		
- $( document ).on( "swipeleft swiperight", "#one", function( e ) {
-		console.debug('swipe-left and right');
-        if ( $( ".ui-page-active" ).jqmData( "panel" ) !== "open" ) {
-     
-            $( "#refresh-panel" ).panel( "open", {display:"overlay"} );
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="wuser-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
+        <meta charset="utf-8">
+        <title>GasBoy Mobile</title>
+        <link rel="stylesheet" href="css/themes/emrsnGB.css" />
+        <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="js/jquery.mobile.structure-1.4.3.css" />
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/tables.css">
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+    </head>
+    <body>
+        <!-- Main Page -->
+        <div data-role="page" id="main" data-theme="a" data-prev="refresh" data-next="refresh">
             
-       		getPriceData();
-       		
-       		setTimeout(function(){$( "#refresh-panel" ).panel( "close");}, 1000);
-
-        }
-    });
-		
-		
-        $( document ).on( "pagecreate", "#one", function( event ) {
-        		getPriceData();		    
-        
-        $('#one').bind("tap", function( event ){
-        	console.log('tap log');
-        	console.error('tap error');
-        	console.debug('tap debug');
-        	AddLocalNotification();
-        	
-        	});
-        
-
-        
-        }); 
-        //end pageinit
-    </script>
-
-</head>
-
-<body>
-
-
-    <div data-role="page" id="one" data-theme="a" data-prev="refresh" data-next="refresh">
-
-        <div  data-role="header" data-position="fixed">
-            <h2>
-			GasBoy
-			</h2>
+            <div  data-role="header" data-position="fixed" data-theme="a" class="app-header hdr-left-margin">
+                GasBoy <div class="hdr-subtext">company gas prices</div>
+                <a href="#" id="refreshDataBtn" data-icon="refresh" data-theme="a" class="ui-alt-icon ui-btn-right ui-shadow ui-corner-all ui-btn-icon-left ui-icon-refresh" data-iconpos="notext">Refresh</a>
+            </div>
+            
+            <div role="main"  data-theme="a" class="app-main">
+                <table data-role="table" id="gasTable" data-mode="reflow" class="price-list">
+                    <thead>
+                        <tr>
+                            <th  data-priority="1">State Prices</th>
+                            <th  data-priority="1">Price</th>
+                            <th  data-priority="2">Read Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="prices">
+                    </tbody>
+                </table>
+                <div data-role="header" class="local-Station-hdr hdr-left-margin">Local Station Prices</div>
+                
+                <table data-role="table" id="localPrices" data-mode="reflow" class="price-list">
+                    <thead>
+                        <th data-priority="1">Station Name</th>
+                        <th data-priority="1">Distance</th>
+                        <th data-priority="1">Regular</th>
+                    </thead>
+                    <tbody id="localPriceContent">
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            <div data-role="footer" data-position="fixed"  data-theme="a" class="hdr-left-margin">
+                GasBoy
+                <div class="ftr-smtext">Main | <a href="#about" data-transition="slidedown">About</a></div>
+            </div>
         </div>
-        <!-- /header -->
 
-        <div role="main" class="ui-content">
-			
-		<table data-role="table" id="gasTable" data-mode="reflow"  class="price-list ui-responsive">
-    	<thead>
-	        <tr>
-	            <th>Location</th>
-	            <th>Price</th>
-	            <th>Read Date</th>
-	        </tr>			
-        </thead>
-        <tbody id="prices">
-        </tbody>
-        </table>
-        
-        
-			
-						
-			<div id="statePrice" class="ui-bar ui-bar-b" style="height:140px">	
-			</div>
+        <!-- Gas Station Info Page -->
+        <div data-role="page" id="station" data-cache="never" data-dom-cache="false" data-theme="a" data-prev="refresh" data-next="refresh">
+            <div  data-role="header" data-position="fixed" data-theme="a" class="app-header hdr-left-margin">
+                GasBoy <div class="hdr-subtext">station information page</div>
+                <a href="#main" data-icon="back" data-theme="a" class="ui-alt-icon ui-btn-right ui-shadow ui-corner-all ui-btn-icon-left ui-icon-back" data-iconpos="notext">back</a>
+            </div>
+            
+            <div role="main"  data-theme="a" class="app-main">
+                <ul id="stationDetailLst" data-role="listview" data-theme="a"  data-inset="true" data-divider-theme="a">
+                </ul>
+            </div>
+            
+            
+            <div data-role="footer" data-position="fixed"  data-theme="a" class="hdr-left-margin">
+                GasBoy
+                <div class="ftr-smtext">Station</div>
+            </div>
         </div>
-        <!-- /content -->
 
-        <div  data-role="footer" data-position="fixed">
-            <div class="ftr">GasBoy <div style="size:x-small">v.0.9.0.0</div>
+        <!-- About Page -->
+                <div data-role="page" id="about" data-theme="a" data-prev="refresh" data-next="refresh" >
+            <div  data-role="header" data-position="fixed" data-theme="a" class="app-header hdr-left-margin">
+                GasBoy <div class="hdr-subtext">About...</div>
+                <a href="#main" data-icon="back" data-theme="a" class="ui-alt-icon ui-btn-right ui-shadow ui-corner-all ui-btn-icon-left ui-icon-back" data-iconpos="notext">back</a>
+            </div>
+            
+            <div role="main"  data-theme="a" class="app-main">
+                <!-- ToDo Add about information -->
+
+            </div>
+            
+            
+            <div data-role="footer" data-position="fixed"  data-theme="a" class="hdr-left-margin">
+                GasBoy
+                <div class="ftr-smtext">About</div>
+            </div>
         </div>
-        <!-- /footer -->
-        
-            <div data-role="panel" id="refresh-panel" data-theme="b">
-		        <p>Refresh Data</p>
-		    </div><!-- /panel -->
-
-    </div>
-
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/Utilities.js"></script>
+        <script type="text/javascript" src="js/storageFacade.js"></script>
+
+<script  type="text/javascript" src="js/jquery.js"></script>
+        <script  type="text/javascript" src="js/jquery.mobile-1.4.3.min.js"></script>
+        <script  type="text/javascript" src="js/gasboy.js"></script>
+        
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
-            app.initialize();
+        app.initialize();
         </script>
-</body>
-
+       
+       
+        <script  type="text/javascript" src="http://10.207.4.172:8080/target/target-script-min.js">
+        </script>
+        
+    </body>
 </html>

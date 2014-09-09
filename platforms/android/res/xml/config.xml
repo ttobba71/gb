@@ -8,10 +8,6 @@
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
-    <feature name="File">
-        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
-        <param name="onload" value="true" />
-    </feature>
     <feature name="NetworkStatus">
         <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
     </feature>
@@ -21,27 +17,25 @@
     <feature name="LocalNotification">
         <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
     </feature>
+    <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,root" />
     <feature name="Notification">
         <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
         <param name="ios-package" value="CDVNotification" />
     </feature>
-    <feature name="Logger">
-        <param name="ios-package" value="CDVLogger" />
+    <feature name="Connection">
+        <param name="ios-package" value="CDVConnection" />
     </feature>
     <name>GasBoy</name>
-    <description>
-        Liebert gas pump prices. (Columbus, Ohio)
-    </description>
-    <author email="jerry.abbott@emerson.com" href="#">
-        Web Apps Development
-    </author>
+    <description>Liebert gas pump prices. (Columbus, Ohio)</description>
+    <author email="jerry.abbott@emerson.com" href="#">Web Apps Development</author>
     <content src="index.html" />
     <access origin="*" />
     <preference name="Orientation" value="default" />
-    <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="10000" />
+    <preference name="SplashScreen" value="Default" />
+    <preference name="SplashScreenDelay" value="2000" />
+    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="auto-hide-splash-screen" value="false" />
     <preference name="permissions" value="none" />
-    <preference name="orientation" value="default" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
@@ -50,8 +44,6 @@
     <preference name="ios-statusbarstyle" value="black-opaque" />
     <preference name="detect-data-types" value="true" />
     <preference name="exit-on-suspend" value="false" />
-    <preference name="show-splash-screen-spinner" value="true" />
-    <preference name="auto-hide-splash-screen" value="true" />
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="7" />
     <preference name="android-installLocation" value="auto" />

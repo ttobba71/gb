@@ -1,75 +1,55 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.dcs.GasBoy" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-
     <name>GasBoy</name>
-    <description>
-        Liebert gas pump prices. (Columbus, Ohio)
-    </description>
-    <author email="jerry.abbott@emerson.com" href="#">
-        Web Apps Development
-    </author>
-    <content src="index.html" />
-    <access origin="*" />
-
-	
-     <platform name="android">
-     	<feature name="Notification">
-    		<param name="ios-package" value="CDVNotification" />
-		</feature>        
-	   	<feature name="Logger">
-	    	<param name="ios-package" value="CDVLogger" />
-		</feature>  
-         <icon src="www/img/icon.png" />
-     </platform>
-     
-     <platform name="ios">
-     <!--
-	    <feature name="LocalNotification">
-	        <param name="ios-package" value="LocalNotification" />
-	        <param name="onload" value="true" />
-	    </feature>
-	    -->
-	    <feature name="Device">
-	        <param name="ios-package" value="CDVDevice" />
-	        <param name="onload" value="true" />
-	    </feature>
-	    <feature name="Local-Notification">
-	        <param name="ios-package" value="Local-Notification" />
-	        <param name="onload" value="true" />
-	    </feature>
-	    <feature name="Notification">
-	        <param name="ios-package" value="CDVNotification" />
-	        <param name="onload" value="true" />
-	    </feature>
-	    <feature name="Logger">
-	        <param name="ios-package" value="CDVLogger" />
-	        <param name="onload" value="true" />
-
-	    </feature>
-        <icon src="www/img/icon.png" />
-     </platform>    
-    
-    
-    
-    <preference name="Orientation" value="default" /> 
-    <preference name="SplashScreen" value="screen" />
-	<preference name="SplashScreenDelay" value="10000" />
-	
-    <preference name="permissions" value="none" />
-    <preference name="orientation" value="default" />
-    <preference name="target-device" value="universal" />
-    <preference name="fullscreen" value="true" />
-    <preference name="webviewbounce" value="true" />
-    <preference name="prerendered-icon" value="true" />
-    <preference name="stay-in-webview" value="false" />
-    <preference name="ios-statusbarstyle" value="black-opaque" />
-    <preference name="detect-data-types" value="true" />
-    <preference name="exit-on-suspend" value="false" />
-    <preference name="show-splash-screen-spinner" value="true" />
-    <preference name="auto-hide-splash-screen" value="true" />
-    <preference name="disable-cursor" value="false" />
-    <preference name="android-minSdkVersion" value="7" />
-    <preference name="android-installLocation" value="auto" />
-    
-    <icon src="www/img/icon.png" />
+    <description>Liebert gas pump prices. (Columbus, Ohio)</description>
+    <author email="jerry.abbott@emerson.com" href="#">Web Apps Development</author>
+    <content src="index.html"/>
+    <access origin="*"/>
+    <platform name="android">
+        <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,root"/>
+        <feature name="Notification">
+            <param name="ios-package" value="CDVNotification"/>
+        </feature>
+        <feature name="Connection">
+            <param name="ios-package" value="CDVConnection"/>
+        </feature>
+        <icon src="www/img/icon.png"/>
+    </platform>
+    <platform name="ios">
+        <preference name="iosPersistentFileLocation" value="Compatibility"/>
+        <!-- <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />-->
+        <feature name="Storage">
+            <param name="onload" value="CDVStorage"/>
+        </feature>
+        <feature name="Device">
+            <param name="ios-package" value="CDVDevice"/>
+            <param name="onload" value="true"/>
+        </feature>
+        <feature name="Local-Notification">
+            <param name="ios-package" value="Local-Notification"/>
+        </feature>
+        <feature name="Logger">
+            <param name="ios-package" value="CDVLogger"/>
+            <param name="onload" value="true"/>
+        </feature>
+        <icon src="www/img/icon.png"/>
+    </platform>
+    <preference name="Orientation" value="default"/>
+    <preference name="SplashScreen" value="Default"/>
+    <preference name="SplashScreenDelay" value="2000"/>
+    <preference name="show-splash-screen-spinner" value="true"/>
+    <preference name="auto-hide-splash-screen" value="false"/>
+    <preference name="permissions" value="none"/>
+    <preference name="target-device" value="universal"/>
+    <preference name="fullscreen" value="true"/>
+    <preference name="webviewbounce" value="true"/>
+    <preference name="prerendered-icon" value="true"/>
+    <preference name="stay-in-webview" value="false"/>
+    <preference name="ios-statusbarstyle" value="black-opaque"/>
+    <preference name="detect-data-types" value="true"/>
+    <preference name="exit-on-suspend" value="false"/>
+    <preference name="disable-cursor" value="false"/>
+    <preference name="android-minSdkVersion" value="7"/>
+    <preference name="android-installLocation" value="auto"/>
+    <icon src="www/img/icon.png"/>
 </widget>

@@ -68,7 +68,7 @@ NSString* const CDVRemoteNotificationError = @"CDVRemoteNotificationError";
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onOrientationDidChange) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 
     // Added in 2.3.0
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveLocalNotification:) name:CDVLocalNotification object:nil];
+    // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveLocalNotification:) name:CDVLocalNotification object:nil];
 
     // Added in 2.5.0
     // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pageDidLoad:) name:CDVPageDidLoadNotification object:self.webView];
@@ -146,9 +146,9 @@ NSString* const CDVRemoteNotificationError = @"CDVRemoteNotificationError";
 }
 
 // default implementation does nothing, ideally, we are not registered for notification if we aren't going to do anything.
- - (void)didReceiveLocalNotification:(NSNotification *)notification
- {
-    // UILocalNotification* localNotification = [notification object]; // get the payload as a LocalNotification
- }
+// - (void)didReceiveLocalNotification:(NSNotification *)notification
+// {
+//    // UILocalNotification* localNotification = [notification object]; // get the payload as a LocalNotification
+// }
 
 @end

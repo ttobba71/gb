@@ -16,6 +16,33 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+function cancelAllNotifications() {
+    try {
+        if (window.plugin !== undefined) {
+            window.plugin.notification.local.cancelAll(function() {
+                console.debug('canceled all notificatons...');
+            }, testScope);
+        }
+    } catch (err) {
+        console.debug(err.message + " cancel notification...");
+    }
+}
+
+function checkConnection() {
+    console.debug('checkConnection');
+    var networkState = navigator.connection.type;
+    var states = {};
+    states[Connection.UNKNOWN] = 'Unknown connection';
+    states[Connection.ETHERNET] = 'Ethernet connection';
+    states[Connection.WIFI] = 'WiFi connection';
+    states[Connection.CELL_2G] = 'Cell 2G connection';
+    states[Connection.CELL_3G] = 'Cell 3G connection';
+    states[Connection.CELL_4G] = 'Cell 4G connection';
+    states[Connection.CELL] = 'Cell generic connection';
+    states[Connection.NONE] = 'No network connection';
+    alert('Connection type: ' + states[networkState]);
+}
+var isOnLine = true;
 var app = {
     // Application Constructor
     initialize: function() {
@@ -27,26 +54,46 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener("resume", this.onResume, false);
+        document.addEventListener("pause", this.onPause, false);
+        document.addEventListener("online", this.onOnline, false);
+        document.addEventListener("offline", this.onOffline, false);
+    },
+    onOnline: function() {
+        alert( 'online');
+        console.debug('onOnline...');
+        isOnLine = true;
+    },
+    onOffline: function() {
+        alert( 'offline');
+        console.debug('onOffline');
+        isOnLine = false;
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-
         app.receivedEvent('deviceready');
-        //navigator.splashscreen.show();
-            	
+        checkConnection();
+        setTimeout(function() {
+            navigator.splashscreen.hide();
+        }, 2000);
+    },
+    onResume: function() {
+        console.debug('onResume...');
+        cancelAllNotifications();
+    },
+    onPause: function() {
+        console.debug('onPause...');
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
-
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
-
         console.log('Received Event: ' + id);
     }
 };

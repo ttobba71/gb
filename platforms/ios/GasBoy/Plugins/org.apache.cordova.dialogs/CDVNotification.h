@@ -29,7 +29,6 @@
 - (void)prompt:(CDVInvokedUrlCommand*)command;
 - (void)beep:(CDVInvokedUrlCommand*)command;
 
-
 @end
 
 @interface CDVAlertView : UIAlertView {}

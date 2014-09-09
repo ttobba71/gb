@@ -4,63 +4,114 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="width=device-width, height=device-height" />
+        <meta name="viewport" content="wuser-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
         <meta charset="utf-8">
-        <title>GasBoy Mobile</title>Ï
-        <link rel="stylesheet" href="js/jquery.mobile-1.4.3.min.css">
+        <title>GasBoy Mobile</title>
+        <link rel="stylesheet" href="css/themes/emrsnGB.css" />
+        <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="js/jquery.mobile.structure-1.4.3.css" />
         <link rel="stylesheet" href="css/style.css">
-
+        <link rel="stylesheet" href="css/tables.css">
+        
         <link rel="shortcut icon" href="img/favicon.ico">
-<!--
-        <script src="http://192.168.1.23:8080/target/target-script-min.js">
-        </script>
--->
-        <script src="js/jquery.js"></script>
-        <script src="js/jquery.mobile-1.4.3.min.js"></script>
-        <script src="js/gasboy.js"></script>
     </head>
-    <body onload="onLoad">
-        <div data-role="page" id="one" data-theme="a" data-prev="refresh" data-next="refresh my-custom-breakpoint">
-            <div  data-role="header" data-position="fixed">
-                <h2>
-                GasBoy
-                </h2>
+    <body>
+        <!-- Main Page -->
+        <div data-role="page" id="main" data-theme="a" data-prev="refresh" data-next="refresh">
+            
+            <div  data-role="header" data-position="fixed" data-theme="a" class="app-header hdr-left-margin">
+                GasBoy <div class="hdr-subtext">company gas prices</div>
+                <a href="#" id="refreshDataBtn" data-icon="refresh" data-theme="a" class="ui-alt-icon ui-btn-right ui-shadow ui-corner-all ui-btn-icon-left ui-icon-refresh" data-iconpos="notext">Refresh</a>
             </div>
-            <!-- /header -->
-            <div role="main" class="ui-content">
-
-                <table data-role="table" id="gasTable" data-mode="columntoggle" class="price-list">
+            
+            <div role="main"  data-theme="a" class="app-main">
+                <table data-role="table" id="gasTable" data-mode="reflow" class="price-list">
                     <thead>
                         <tr>
-                            <th>Location</th>
-                            <th>Price</th>
-                            <th>Read Date</th>
+                            <th  data-priority="1">Location Prices</th>
+                            <th  data-priority="1">Price</th>
+                            <th  data-priority="2">Read Date</th>
                         </tr>
                     </thead>
                     <tbody id="prices">
+                        <tr><td colspan="3">No Data Available</td></tr>
                     </tbody>
                 </table>
-
-
-
-
-                <div id="statePrice" class="ui-bar ui-bar-b" style="height:140px">
-                </div>
+                <div data-role="header" class="local-Station-hdr hdr-left-margin">Local Station Prices</div>
+                
+                <table data-role="table" id="localPrices" data-mode="reflow" class="price-list">
+                    <thead>
+                        <th data-priority="1">Station Name</th>
+                        <th data-priority="1">Distance</th>
+                        <th data-priority="1">Regular</th>
+                    </thead>
+                    <tbody id="localPriceContent">
+                        <tr><td colspan="3">No Data Available</td></tr>
+                    </tbody>
+                </table>
             </div>
-            <!-- /content -->
-            <div  data-role="footer" data-position="fixed">
-                <div class="ftr">GasBoy <div style="size:x-small">v.0.9.0.0</div>
+            
+            
+            <div data-role="footer" data-position="fixed"  data-theme="a" class="hdr-left-margin">
+                GasBoy
+                <div class="ftr-smtext">Main | <a href="#about" data-transition="slidedown">About</a></div>
             </div>
-            <!-- /footer -->
+        </div>
 
-            <div data-role="panel" id="refresh-panel" data-theme="b">
-                <p>Refresh Data</p>
-                </div><!-- /panel -->
+        <!-- Gas Station Info Page -->
+        <div data-role="page" id="station" data-cache="never" data-dom-cache="false" data-theme="a" data-prev="refresh" data-next="refresh">
+            <div  data-role="header" data-position="fixed" data-theme="a" class="app-header hdr-left-margin">
+                GasBoy <div class="hdr-subtext">station information page</div>
+                <a href="#main" data-icon="back" data-theme="a" class="ui-alt-icon ui-btn-right ui-shadow ui-corner-all ui-btn-icon-left ui-icon-back" data-iconpos="notext">back</a>
             </div>
-            <script type="text/javascript" src="cordova.js"></script>
-            <script type="text/javascript" src="js/index.js"></script>
-            <script type="text/javascript">
-                        app.initialize();
-            </script>
-        </body>
-    </html>
+            
+            <div role="main"  data-theme="a" class="app-main">
+                <ul id="stationDetailLst" data-role="listview" data-theme="a"  data-inset="true" data-divider-theme="a">
+                </ul>
+            </div>
+            
+            
+            <div data-role="footer" data-position="fixed"  data-theme="a" class="hdr-left-margin">
+                GasBoy
+                <div class="ftr-smtext">Station</div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+                <div data-role="page" id="about" data-theme="a" data-prev="refresh" data-next="refresh" >
+            <div  data-role="header" data-position="fixed" data-theme="a" class="app-header hdr-left-margin">
+                GasBoy <div class="hdr-subtext">About...</div>
+                <a href="#main" data-icon="back" data-theme="a" class="ui-alt-icon ui-btn-right ui-shadow ui-corner-all ui-btn-icon-left ui-icon-back" data-iconpos="notext">back</a>
+            </div>
+            
+            <div role="main"  data-theme="a" class="app-main">
+                <!-- ToDo Add about information -->
+
+            </div>
+            
+            
+            <div data-role="footer" data-position="fixed"  data-theme="a" class="hdr-left-margin">
+                GasBoy
+                <div class="ftr-smtext">About</div>
+            </div>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/Utilities.js"></script>
+        <script type="text/javascript" src="js/storageFacade.js"></script>
+
+<script  type="text/javascript" src="js/jquery.js"></script>
+        <script  type="text/javascript" src="js/jquery.mobile-1.4.3.min.js"></script>
+        <script  type="text/javascript" src="js/gasboy.js"></script>
+        
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+        app.initialize();
+        </script>
+       
+       
+       <script  type="text/javascript" src="http://192.168.1.23:8080/target/target-script-min.js">
+        </script>
+
+        
+    </body>
+</html>

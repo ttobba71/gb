@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>585BA0CE-1F87-4051-84BD-1162CC5CD05C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>GasBoy</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>56E61CD7-00E6-49C3-84A6-D0929CD84FC1</key>
+		<string>https://github.com/ttobba71/gb.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>platforms/ios/GasBoy.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>56E61CD7-00E6-49C3-84A6-D0929CD84FC1</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ttobba71/gb.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>56E61CD7-00E6-49C3-84A6-D0929CD84FC1</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>56E61CD7-00E6-49C3-84A6-D0929CD84FC1</string>
+			<key>IDESourceControlWCCName</key>
+			<string>gb</string>
+		</dict>
+	</array>
+</dict>
+</plist>

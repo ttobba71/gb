@@ -53,9 +53,8 @@ extern NSString* const CDVRemoteNotificationError;
  - (void) onResume {}
  - (void) onOrientationWillChange {}
  - (void) onOrientationDidChange {}
- */
  - (void)didReceiveLocalNotification:(NSNotification *)notification;
- 
+ */
 
 - (id)appDelegate;
 
