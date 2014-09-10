@@ -2,6 +2,12 @@
 <widget id="com.dcs.GasBoy" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
     <preference name="AndroidLaunchMode" value="singleTop" />
+    <feature name="Notification">
+        <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
+    </feature>
+    <feature name="Storage">
+        <param name="android-package" value="org.apache.cordova.Storage" />
+    </feature>
     <feature name="App">
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
@@ -17,19 +23,13 @@
     <feature name="LocalNotification">
         <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
     </feature>
-    <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,root" />
-    <feature name="Notification">
-        <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
-        <param name="ios-package" value="CDVNotification" />
-    </feature>
-    <feature name="Connection">
-        <param name="ios-package" value="CDVConnection" />
-    </feature>
+    <icon src="res/drawable/icon.png" />
     <name>GasBoy</name>
     <description>Liebert gas pump prices. (Columbus, Ohio)</description>
-    <author email="jerry.abbott@emerson.com" href="#">Web Apps Development</author>
+    <author email="jerry.abbott@emerson.com">Web Apps Development</author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="loadUrlTimeoutValue" value="60000" />
     <preference name="Orientation" value="default" />
     <preference name="SplashScreen" value="Default" />
     <preference name="SplashScreenDelay" value="2000" />
@@ -37,7 +37,7 @@
     <preference name="auto-hide-splash-screen" value="false" />
     <preference name="permissions" value="none" />
     <preference name="target-device" value="universal" />
-    <preference name="fullscreen" value="true" />
+    <preference name="fullscreen" value="false" />
     <preference name="webviewbounce" value="true" />
     <preference name="prerendered-icon" value="true" />
     <preference name="stay-in-webview" value="false" />

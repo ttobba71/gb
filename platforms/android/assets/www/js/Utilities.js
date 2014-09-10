@@ -58,19 +58,14 @@ var gasFeedTest = {
         "distance": "2.6 miles"
     }]
 };
-var result = {
-    LocalPrices: [{
+
+var LocalPrice = {
         ReadDate: '',
         Price: '',
-        LocationName: ''
-    }],
-    StatePrices: {
-        state: '',
-        regular: '',
-        mid: '',
-        premium: '',
-        diesel: ''
-    }
+        LocationName: '' 
+};
+var result = {
+    LocalPrices: []
 };
 var geoInfo = {
     lat: '',
@@ -122,6 +117,8 @@ var localPrc = {
 };
 //format string implementation
 
+var isOnLine = true;
+
 if (!String.prototype.format) {
     String.prototype.format = function() {
         var args = arguments;
@@ -130,7 +127,13 @@ if (!String.prototype.format) {
         });
     };
 }
-
+function stringToBoolean (string){
+    switch(string.toLowerCase()){
+        case "true": case "yes": case "1": return true;
+        case "false": case "no": case "0": case null: return false;
+        default: return Boolean(string);
+    }
+}
 
 function GBHashTable(obj) {
     this.length = 0;

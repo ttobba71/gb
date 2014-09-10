@@ -47,6 +47,12 @@ function executeAsync(func, data) {
     return rval;
 }
 
+function RefreshData() {
+    executeAsync(getPriceData);
+    executeAsync(getSurroundingAreaData);
+    executeAsync(getCurrentPosition);
+}
+
 function testScope() {
     console.log('testScope...');
 }
@@ -79,9 +85,9 @@ function updateView(presult) {
 
 function updateLocalPriceTable(result) {
     console.debug('updateLocalPriceTable: ');
-    if( stationsInfo === null || stationsInfo === undefined) {
+    if (stationsInfo === null || stationsInfo === undefined) {
         stationsInfo = {};
-        stationsInfo.stations  = result
+        stationsInfo.stations = result;
     }
     $('#localPriceContent').empty();
     var count = 0;
@@ -100,7 +106,7 @@ function updateLocalPriceTable(result) {
 }
 
 function loadMap(start) {
-    var mapUrlBase = 'comgooglemaps://';
+    var mapUrlBase = 'geo://';
     var gmapUrl = '?q={0}&zoom=14&views=traffic'.format(start);
     var mapUrl = '?q={0}'.format(start);
     console.debug('loadMap: ' + mapUrlBase + gmapUrl);
@@ -110,7 +116,7 @@ function loadMap(start) {
             document.location = 'maps://' + mapUrl;
         }, 300);
     } catch (error) {
-        cconsole.error(error.message);
+        console.error(error.message);
     }
 }
 
@@ -186,8 +192,8 @@ function getSurroundingAreaData() {
             try {
                 stationsInfo = data;
                 console.debug('after parse...');
-                saveStationsLocally(stationsInfo.stations);
                 updateLocalPriceTable(data.stations);
+                saveStationsLocally(stationsInfo.stations);
             } catch (err) {
                 gbdb.getStationResults(updateLocalPriceTable);
                 console.error('getSurroundingAreaData...error: ' + err.message);
@@ -215,11 +221,11 @@ function getPriceData() {
         success: function(data) {
             try {
                 result = data;
-                savePricesLocally(result.LocalPrices);
                 updateView(result);
+                savePricesLocally(result.LocalPrices);
             } catch (err) {
                 console.error('Error...getPriceData...error ' + err.message);
-                updateView(gbdb.PriceResults);
+                // gbdb.getPriceResults(updateView);
             }
         },
         error: function(xhr, status, error) {
@@ -228,49 +234,40 @@ function getPriceData() {
         }
     });
 }
-
 $(window).on("navigate", function(event, data) {
     console.log(data.state);
 });
-
 $(window).on("orientationchange", function(event) {
     console.debug('orientation changed');
 });
-
 $(document).on("mobileinit", function() {
     console.debug('mobileinit');
     $.mobile.page.prototype.options.domCache = false;
     $.mobile.loader.prototype.options.disabled = true;
 });
-
 $(document).on("swipe", "#main", function(e) {
     console.debug('swipe');
 });
-
 $("#station").on("pagechange", function(event) {
     console.debug('station changed......');
 });
-
 $(document).on("pageinit", "#station", function(e) {
     console.debug('page station init...');
-    alert('statin-pi-isOnline: ' + isOnLine);
+    //alert('statin-pi-isOnline: ' + isOnLine);
     $('#station').bind("swipe", function(event) {
         console.debug('swipe debug');
         $.mobile.navigate("#main");
     });
 });
-
 $(document).on("pagecreate", "#about", function(e) {
     console.debug('page about loaded...');
 });
-
 $(document).on("pagecreate", "#main", function(event) {
+    //alert( window.device.name  + ' : ' + window.device.model  );
     console.debug('main pagecreate');
     $(".ui-loader").hide();
     executeAsync(cancelAllNotifications);
-    executeAsync(getCurrentPosition);
-    executeAsync(getPriceData);
-    executeAsync(getSurroundingAreaData);
+    executeAsync(RefreshData);
     $('body').on('pagecontainertransition', function(event, ui) {
         console.debug('pagecontainertransition');
         //gets the id you programatically give to your page
@@ -289,12 +286,10 @@ $(document).on("pagecreate", "#main", function(event) {
     });
     $('#refreshDataBtn').on('tap', function(event) {
         console.debug('tapped refresh...');
-        executeAsync(getCurrentPosition);
-        executeAsync(getPriceData);
-        executeAsync(getSurroundingAreaData);
+        executeAsync(RefreshData);
     });
     $('#main').bind("swipe", function(event) {
         console.debug('swipe debug');
-        executeAsync(AddLocalNotification);
+        //executeAsync(AddLocalNotification);
     });
 });

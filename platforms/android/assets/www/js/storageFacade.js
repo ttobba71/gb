@@ -3,25 +3,30 @@ var priceObj = null;
 var sqlConfig = {
     StationsQuery: 'select * from Stations order by distance',
     PriceQuery: 'select * from Prices order by id desc',
-    createTableDDL: ['CREATE TABLE IF NOT EXISTS Stations (country, zip, reg_price, mid_price, pre_price, diesel_price, reg_date, mid_date, pre_date, diesel_date, address, diesel, id unique, lat, lng, station, region, city, distance, load_date )', 'CREATE TABLE IF NOT EXISTS Prices (id, location, price, readDate, load_date)'],
+    createTableDDL: ['CREATE TABLE IF NOT EXISTS Stations (country, zip, reg_price, mid_price, pre_price, diesel_price, reg_date, mid_date, pre_date, diesel_date, address, diesel, id unique, lat, lng, station, region, city, distance, load_date )', 'CREATE TABLE IF NOT EXISTS Prices (id unique, location unique, price, readDate, load_date)'],
     dropTableDDL: ['DROP TABLE IF EXISTS Stations', 'DROP TABLE IF EXISTS Prices']
 };
 var dbConfig = {
-    forceUpdate: window.localStorage.getItem('forceUpdate'),
+    forceUpdate: stringToBoolean(window.localStorage.getItem('forceUpdate')),
     dbName: "PriceDB",
     dbVersion: "1.0",
     dbDescription: "Price Storage",
     dbSize: 100000,
     createDB: function(tx) {
-        console.debug( 'forceUpdate:' + forceUpdate );
+        console.debug('createDB...forceUpdate:' + dbConfig.forceUpdate);
         if (dbConfig.forceUpdate) {
-            console.debug( 'drop and create DB...');
-            $.each(sqlConfig.dropTableDDL, function(i, value) {
-                tx.executeSql(value);
-            });
+            console.debug('drop and create DB...');
+            try {
+                $.each(sqlConfig.dropTableDDL, function(i, value) {
+                    tx.executeSql(value);
+                });
+            } catch (err) {
+                window.localStorage.setItem('forceUpdate', true);
+            }
             $.each(sqlConfig.createTableDDL, function(i, value) {
                 tx.executeSql(value);
             });
+            window.localStorage.setItem('forceUpdate', false);
         }
     },
     init: function() {
@@ -31,152 +36,210 @@ var dbConfig = {
             console.error(err.code + ' : ' + err.message);
         }, function() {
             console.info('Database successfully created.');
-            window.localStorage.setItem('forceUpdate', false);
         });
     }
 };
-var gasBoyDBObj = {
-    PriceData: null,
-    StationResults: [],
-    PriceResults: [],
-    sdb: null,
-    pdb: null,
-    priceInsValue: null,
-    stationInsValue: null,
-    init: function() {
-        console.debug('start gasBoyDBObj.init');
-        dbConfig.forceUpdate = true;
-        dbConfig.init();
-        gasBoyDBObj.pdb = window.openDatabase(dbConfig.dbName, dbConfig.dbVersion, dbConfig.dbDescription, dbConfig.dbSize);
-        gasBoyDBObj.sdb = window.openDatabase(dbConfig.dbName, dbConfig.dbVersion, dbConfig.dbDescription, dbConfig.dbSize);
-    },
-    _saveStationInfo: function(tx) {
+
+function gasBoyDBObj() {
+    _checkConnection = function(db) {
+        return (db === undefined || db === null);
+    };
+    _queryForPriceResults = function(tx) {
+        tx.executeSql(sqlConfig.PriceQuery, PriceResults, _priceSuccess, fail);
+        window.localStorage.setItem('results', new Date(Date.now()));
+    };
+    _queryForStationResults = function(tx) {
+        tx.executeSql(sqlConfig.StationsQuery, StationResults, _stationSuccess, fail);
+        window.localStorage.setItem('results', new Date(Date.now()));
+    };
+    _saveStationInfo = function(tx) {
         console.debug('start _saveStationInfo');
-        $.each(gasBoyDBObj.stationInsValue, function(i, value) {
+        $.each(stationInsValue, function(i, value) {
             try {
                 var update = 'update Stations set country=?, zip=?, reg_price=?, mid_price=?, pre_price=?, diesel_price=?, \
                             reg_date=?, mid_date=?, pre_date=?, diesel_date=?, address=?, diesel=?, \
                             lat=?, lng=?, station=?, region=?, city=?, distance=?, load_date=? \
                             where id = ?';
-                console.debug(update);
-                tx.executeSql(update, [value.country, value.zip, value.reg_price, value.mid_price, value.pre_price, value.diesel_price, value.reg_date, value.mid_date, value.pre_date, value.diesel_date, value.address, value.diesel, value.lat, value.lng, value.station, value.region, value.city, value.distance, new Date(Date.now()), value.id], gasBoyDBObj.updateStationSuccess, gasBoyDBObj.fail);
+                console.debug('update: ' + value.id);
+                tx.executeSql(update, [value.country, value.zip, value.reg_price, value.mid_price, value.pre_price, value.diesel_price, value.reg_date, value.mid_date, value.pre_date, value.diesel_date, value.address, value.diesel, value.lat, value.lng, value.station, value.region, value.city, value.distance, new Date(Date.now()), value.id], updateStationSuccess, fail);
             } catch (err) {
                 console.error('saveStationInfo error... ' + err.message);
             }
         });
-    },
-    _savePriceInfo: function(tx) {
-        console.debug('start _savePriceInfo');
-        $.each(gasBoyDBObj.priceInsValue, function(i, value) {
-            try {
+    };
+    _savePriceInfo = function(tx) {
+        console.debug('start _savePriceInfo' + priceInsValue);
+        try {
+            $.each(priceInsValue, function(i, value) {
                 var update = 'Update Prices set price=?, readDate=?, load_date=? \
                              where location = ?';
-                console.debug(update);
-                tx.executeSql(update, [value.Price, value.ReadDate, new Date(Date.now()), value.LocationName], gasBoyDBObj.updatePriceSuccess, gasBoyDBObj.fail);
-            } catch (err) {
-                console.error('_savePriceInfo error... ' + err.message);
-            }
-        });
-    },
-    saveStationInfo: function(sInfo) {
-        console.debug('start saveStationInfo');
-        gasBoyDBObj.stationInsValue = sInfo;
-        if (gasBoyDBObj.sdb === undefined || gasBoyDBObj.sdb === null) {
-            gasBoyDBObj.init();
+                console.debug('insert: ' + value.LocationName);
+                tx.executeSql(update, [value.Price, value.ReadDate, new Date(Date.now()), value.LocationName], updatePriceSuccess, fail);
+            });
+        } catch (err) {
+            console.error('_savePriceInfo error... ' + err.message);
         }
-        gasBoyDBObj.sdb.transaction(gasBoyDBObj._saveStationInfo);
-    },
-    savePriceInfo: function(pInfo) {
-        console.debug('start savePriceInfo');
-        gasBoyDBObj.priceInsValue = pInfo;
-        if (gasBoyDBObj.pdb === undefined || gasBoyDBObj.pdb === null) {
-            gasBoyDBObj.init();
+    };
+    success = function(ex, results) {
+        console.info('Success...' + results.rowsAffected);
+    };
+    fail = function(tx, err) {
+        console.info('Failed Sql ' + err.message);
+    };
+    _priceSuccess = function(results, CallBack) {
+        //gasBoyDBObj.PriceResults = results.rows;
+        var len = results.rows.length;
+        PriceResults = {};
+        PriceResults.LocalPrices = [];
+        for (var i = 0; i < len; i++) {
+            PriceResults.LocalPrices[i] = {};
+            PriceResults.LocalPrices[i].ReadDate = results.rows.item(i).readDate;
+            PriceResults.LocalPrices[i].Price = results.rows.item(i).price;
+            PriceResults.LocalPrices[i].LocationName = results.rows.item(i).location;
+            console.debug('location: ' + PriceResults.LocalPrices[i].LocationName);
         }
-        gasBoyDBObj.pdb.transaction(gasBoyDBObj._savePriceInfo);
-    },
-    dateConvert: function(strDate) {
+        CallBack(PriceResults);
+    };
+    _stationSuccess = function(results, CallBack) {
+        var len = results.rows.length;
+        for (var i = 0; i < len; i++) {
+            StationResults[i] = {};
+            StationResults[i].country = results.rows.item(i).country;
+            StationResults[i].zip = results.rows.item(i).zip;
+            StationResults[i].reg_price = results.rows.item(i).reg_price;
+            StationResults[i].mid_price = results.rows.item(i).mid_price;
+            StationResults[i].diesel_price = results.rows.item(i).diesel_price;
+            StationResults[i].reg_date = results.rows.item(i).reg_date;
+            StationResults[i].mid_date = results.rows.item(i).mid_date;
+            StationResults[i].pre_date = results.rows.item(i).pre_date;
+            StationResults[i].diesel_date = results.rows.item(i).diesel_date;
+            StationResults[i].diesel = results.rows.item(i).diesel;
+            StationResults[i].lat = results.rows.item(i).lat;
+            StationResults[i].lng = results.rows.item(i).lng;
+            StationResults[i].station = results.rows.item(i).station;
+            StationResults[i].region = results.rows.item(i).region;
+            StationResults[i].city = results.rows.item(i).city;
+            StationResults[i].distance = results.rows.item(i).distance;
+            console.debug('station: ' + results.rows.item(i).station);
+        }
+        console.debug('StationResults.length: ' + StationResults.length);
+        CallBack(StationResults);
+    };
+    dateConvert = function(strDate) {
         try {
             var d = new Date(strDate);
             return d;
         } catch (err) {
             console.debug('dateConvert..error.' + err.message);
         }
-    },
-    updateStationSuccess: function(tx, results) {
-        console.info('Success...');
-        if (!results.rowsAffected) {
+    };
+    updateStationSuccess = function(tx, results) {
+        //console.info('updateStationSuccess...Success...' + results.rowsAffected);
+        if (results.rowsAffected === 0) {
             var insert = 'INSERT INTO Stations ( country, zip, reg_price, mid_price, pre_price, diesel_price, \
                             reg_date, mid_date, pre_date, diesel_date, address, diesel, id, \
                             lat, lng, station, region, city, distance, load_date) \
                             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-            console.debug(insert);
-            $.each(gasBoyDBObj.stationInsValue, function(i, value) {
+            //console.debug(insert);
+            $.each(stationInsValue, function(i, value) {
                 try {
-                    tx.executeSql(insert, [value.country, value.zip, value.reg_price, value.mid_price, value.pre_price, value.diesel_price, value.reg_date, value.mid_date, value.pre_date, value.diesel_date, value.address, value.diesel, value.id, value.lat, value.lng, value.station, value.region, value.city, value.distance, new Date(Date.now())], gasBoyDBObj.success, gasBoyDBObj.fail);
+                    console.debug('insert: ' + value.id);
+                    tx.executeSql(insert, [value.country, value.zip, value.reg_price, value.mid_price, value.pre_price, value.diesel_price, value.reg_date, value.mid_date, value.pre_date, value.diesel_date, value.address, value.diesel, value.id, value.lat, value.lng, value.station, value.region, value.city, value.distance, new Date(Date.now())], success, fail);
                 } catch (err) {
                     console.error('updateStationSuccess error... ' + err.message);
                 }
             });
         }
-    },
-    updatePriceSuccess: function(tx, results) {
-        console.info('Success...');
-        if (!results.rowsAffected) {
+    };
+    updatePriceSuccess = function(tx, results) {
+        //console.info('updatePriceSuccess...Success...' + results.rowsAffected);
+        if (results.rowsAffected === 0) {
             var insert = 'INSERT INTO Prices (id, location, price, readDate, load_date ) VALUES (?,?,?,?,?)';
-            console.debug(insert);
-            $.each(gasBoyDBObj.priceInsValue, function(i, value) {
+            //console.debug(insert);
+            $.each(priceInsValue, function(i, value) {
                 try {
-                    tx.executeSql(insert, [(i + 1), value.LocationName, value.Price, value.ReadDate, new Date(Date.now())], gasBoyDBObj.success, gasBoyDBObj.fail);
+                    console.debug('insert: ' + value.LocationName);
+                    tx.executeSql(insert, [(i + 1), value.LocationName, value.Price, value.ReadDate, new Date(Date.now())], success, fail);
                 } catch (err) {
                     console.error('updatePriceSuccess error... ' + err.message);
                 }
             });
         }
-    },
-    success: function(ex, results) {
-        console.info('Success...');
-    },
-    fail: function(err, results) {
-        console.error(err.code + ': ' + err.message);
-    },
-    _queryForResults: function(tx) {
-        tx.executeSql(sqlConfig.PriceQuery, this.PriceResults, this.querySuccess, this.fail);
-        tx.executeSql(sqlConfig.StationsQuery, this.StationResults, this.querySuccess, this.fail);
-        window.localStorage.setItem('results', new Date(Date.now()));
-    },
-    querySuccess: function(tx, results) {
+    };
+    querySuccess = function(tx, results) {
         console.debug('row count: ' + results.rows.length);
-    },
-    getPriceResults: function() {
+    };
+    getPriceResults = function(CallBack) {
         console.debug('start getResults');
-        if (gasBoyDBObj.pdb === undefined || gasBoyDBObj.pdb === null) {
-            gasBoyDBObj.init();
+        if (_checkConnection(rdb)) {
+            init();
         }
-        gasBoyDBObj.pdb.transaction(gasBoyDBObj._queryForResults, gasBoyDBObj.fail, gasBoyDBObj.success);
-    },
-    getStationResults: function() {
+        gbPriceTransaction(CallBack);
+        //rdb.transaction(_queryForPriceResults);
+    };
+    gbPriceTransaction = function(CallBackToSource) {
+        rdb.transaction(function(tx) {
+            gbPriceExecuteSql(tx, sqlConfig.PriceQuery, CallBackToSource);
+        });
+    };
+    gbPriceExecuteSql = function(tx, Query, CallBackToSource) {
+        tx.executeSql(Query, PriceResults, function(tx, results) {
+            _priceSuccess(results, CallBackToSource);
+        }, fail);
+    };
+    getStationResults = function(CallBack) {
         console.debug('start getResults');
-        if (gasBoyDBObj.sdb === undefined || gasBoyDBObj.sdb === null) {
-            gasBoyDBObj.init();
+        if (_checkConnection(rdb)) {
+            init();
         }
-        gasBoyDBObj.sdb.transaction(gasBoyDBObj._queryForResults, gasBoyDBObj.fail, gasBoyDBObj.success);
-    },
-    CleanResults: function() {
-        console.debug('getResults...');
-        var r = null;
-        try {
-            if (gasBoyDBObj.db === null) gasBoyDBObj.init();
-            //if (this.PriceResults !== undefined && this.PriceResults.length === 0) return null;
-            for (var row = 0; i < gasBoyDBObj.PriceResults.length; i++) {
-                gasBoyDBObj.priceData = new LocalPrice();
-                lp.LocationName = gasBoyDBObj.PriceResults.location;
-                lp.ReadDate = gasBoyDBObj.PriceResults.readDate;
-                lp.Price = gasBoyDBObj.PriceResults.price;
-                r.LocalPrices[i] = lp;
-            }
-        } catch (err) {
-            console.error('getRusults Error... ' + err.message);
+        gbStationTransaction(CallBack);
+        // rdb.transaction(_queryForStationResults);
+    };
+    gbStationTransaction = function(CallBackToSource) {
+        rdb.transaction(function(tx) {
+            gbStationExecuteSql(tx, sqlConfig.StationsQuery, CallBackToSource);
+        });
+    };
+    gbStationExecuteSql = function(tx, Query, CallBackToSource) {
+        tx.executeSql(Query, StationResults, function(tx, results) {
+            _stationSuccess(results, CallBackToSource);
+        }, fail);
+    };
+    init = function() {
+        console.debug('start gasBoyDBObj.init');
+        dbConfig.init();
+        if (_checkConnection(db)) db = window.openDatabase(dbConfig.dbName, dbConfig.dbVersion, dbConfig.dbDescription, dbConfig.dbSize);
+        if (_checkConnection(rdb)) rdb = window.openDatabase(dbConfig.dbName, dbConfig.dbVersion, dbConfig.dbDescription, dbConfig.dbSize);
+    };
+    saveStationInfo = function(sInfo) {
+        console.debug('start saveStationInfo');
+        stationInsValue = sInfo;
+        if (_checkConnection(db)) {
+            init();
         }
-        return r;
-    }
-};
+        db.transaction(_saveStationInfo);
+    };
+    savePriceInfo = function(pInfo) {
+        console.debug('start savePriceInfo');
+        priceInsValue = pInfo;
+        if (_checkConnection(db)) {
+            init();
+        }
+        db.transaction(_savePriceInfo);
+    };
+    var that = this;
+    var StationResults = [];
+    var PriceResults = [];
+    var db = null;
+    var rdb = null;
+    var priceInsValue = null;
+    var stationInsValue = null;
+    return {
+        PriceResults: PriceResults,
+        StationResults: StationResults,
+        saveStationInfo: saveStationInfo,
+        savePriceInfo: savePriceInfo,
+        getStationResults: getStationResults,
+        getPriceResults: getPriceResults
+    };
+}

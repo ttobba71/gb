@@ -65,12 +65,12 @@ var app = {
         document.addEventListener("offline", this.onOffline, false);
     },
     onOnline: function() {
-        alert( 'online');
+        //alert( 'online');
         console.debug('onOnline...');
         setTimeout(isOnLine = checkConnection, 0);
     },
     onOffline: function() {
-        alert( 'offline');
+        //alert( 'offline');
         console.debug('onOffline');
         setTimeout(isOnLine = checkConnection, 0);
     },

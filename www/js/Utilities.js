@@ -63,7 +63,7 @@ var LocalPrice = {
         ReadDate: '',
         Price: '',
         LocationName: '' 
-}
+};
 var result = {
     LocalPrices: []
 };

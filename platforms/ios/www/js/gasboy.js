@@ -31,7 +31,7 @@ function executeAsync(func) {
     try {
         setTimeout(rval = func, 0);
     } catch (e) {
-        alert(e.message);
+        console.error(e.message);
     }
     return rval;
 }
@@ -42,9 +42,15 @@ function executeAsync(func, data) {
     try {
         setTimeout(rval = func(data), 0);
     } catch (e) {
-        alert(e.message);
+        console.error(e.message);
     }
     return rval;
+}
+
+function RefreshData() {
+    executeAsync(getPriceData);
+    executeAsync(getSurroundingAreaData);
+    executeAsync(getCurrentPosition);
 }
 
 function testScope() {
@@ -79,9 +85,9 @@ function updateView(presult) {
 
 function updateLocalPriceTable(result) {
     console.debug('updateLocalPriceTable: ');
-    if( stationsInfo === null || stationsInfo === undefined) {
+    if (stationsInfo === null || stationsInfo === undefined) {
         stationsInfo = {};
-        stationsInfo.stations  = result
+        stationsInfo.stations = result;
     }
     $('#localPriceContent').empty();
     var count = 0;
@@ -100,7 +106,7 @@ function updateLocalPriceTable(result) {
 }
 
 function loadMap(start) {
-    var mapUrlBase = 'comgooglemaps://';
+    var mapUrlBase = 'geo://';
     var gmapUrl = '?q={0}&zoom=14&views=traffic'.format(start);
     var mapUrl = '?q={0}'.format(start);
     console.debug('loadMap: ' + mapUrlBase + gmapUrl);
@@ -110,7 +116,7 @@ function loadMap(start) {
             document.location = 'maps://' + mapUrl;
         }, 300);
     } catch (error) {
-        console.debug(error.message);
+        console.error(error.message);
     }
 }
 
@@ -186,10 +192,10 @@ function getSurroundingAreaData() {
             try {
                 stationsInfo = data;
                 console.debug('after parse...');
-                saveStationsLocally(stationsInfo.stations);
                 updateLocalPriceTable(data.stations);
+                saveStationsLocally(stationsInfo.stations);
             } catch (err) {
-                gbdb.getStationResults(updateLocalPriceTable);
+                //gbdb.getStationResults(updateLocalPriceTable);
                 console.error('getSurroundingAreaData...error: ' + err.message);
             }
         },
@@ -215,11 +221,11 @@ function getPriceData() {
         success: function(data) {
             try {
                 result = data;
-                savePricesLocally(result.LocalPrices);
                 updateView(result);
+                savePricesLocally(result.LocalPrices);
             } catch (err) {
                 console.error('Error...getPriceData...error ' + err.message);
-                updateView(gbdb.PriceResults);
+                // gbdb.getPriceResults(updateView);
             }
         },
         error: function(xhr, status, error) {
@@ -227,28 +233,6 @@ function getPriceData() {
             console.info('load Price from DB');
         }
     });
-}
-
-function testData() {
-    var r = result;
-    r.LocalPrices = [{
-        ReadDate: new Date(Date.now()).toISOString(),
-        Price: '3.09',
-        LocationName: 'Columbus'
-    }, {
-        ReadDate: new Date(Date.now()).toISOString(),
-        Price: '3.13',
-        LocationName: 'Delaware'
-    }];
-    r.StatePrices = {
-        state: 'Ohio',
-        regular: '3.05',
-        mid: '3.10',
-        premium: '3.16',
-        diesel: '3.31'
-    };
-    updateView(r);
-    updateLocalPriceTable(gasFeedTest.stations);
 }
 $(window).on("navigate", function(event, data) {
     console.log(data.state);
@@ -269,7 +253,7 @@ $("#station").on("pagechange", function(event) {
 });
 $(document).on("pageinit", "#station", function(e) {
     console.debug('page station init...');
-    alert('statin-pi-isOnline: ' + isOnLine);
+    //alert('statin-pi-isOnline: ' + isOnLine);
     $('#station').bind("swipe", function(event) {
         console.debug('swipe debug');
         $.mobile.navigate("#main");
@@ -279,13 +263,11 @@ $(document).on("pagecreate", "#about", function(e) {
     console.debug('page about loaded...');
 });
 $(document).on("pagecreate", "#main", function(event) {
+    //alert( window.device.name  + ' : ' + window.device.model  );
     console.debug('main pagecreate');
-    console.debug('main-pc-isOnline: ' + isOnLine);
     $(".ui-loader").hide();
     executeAsync(cancelAllNotifications);
-    executeAsync(getCurrentPosition);
-    executeAsync(getPriceData);
-    executeAsync(getSurroundingAreaData);
+    RefreshData();
     $('body').on('pagecontainertransition', function(event, ui) {
         console.debug('pagecontainertransition');
         //gets the id you programatically give to your page
@@ -304,12 +286,10 @@ $(document).on("pagecreate", "#main", function(event) {
     });
     $('#refreshDataBtn').on('tap', function(event) {
         console.debug('tapped refresh...');
-        executeAsync(getCurrentPosition);
-        executeAsync(getPriceData);
-        executeAsync(getSurroundingAreaData);
+        RefreshData();
     });
     $('#main').bind("swipe", function(event) {
         console.debug('swipe debug');
-        executeAsync(AddLocalNotification);
+        //executeAsync(AddLocalNotification);
     });
 });

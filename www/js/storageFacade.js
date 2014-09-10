@@ -16,12 +16,17 @@ var dbConfig = {
         console.debug('createDB...forceUpdate:' + dbConfig.forceUpdate);
         if (dbConfig.forceUpdate) {
             console.debug('drop and create DB...');
-            $.each(sqlConfig.dropTableDDL, function(i, value) {
-                tx.executeSql(value);
-            });
+            try {
+                $.each(sqlConfig.dropTableDDL, function(i, value) {
+                    tx.executeSql(value);
+                });
+            } catch (err) {
+                window.localStorage.setItem('forceUpdate', true);
+            }
             $.each(sqlConfig.createTableDDL, function(i, value) {
                 tx.executeSql(value);
             });
+            window.localStorage.setItem('forceUpdate', false);
         }
     },
     init: function() {
@@ -31,7 +36,6 @@ var dbConfig = {
             console.error(err.code + ' : ' + err.message);
         }, function() {
             console.info('Database successfully created.');
-            window.localStorage.setItem('forceUpdate', false);
         });
     }
 };
@@ -50,13 +54,13 @@ function gasBoyDBObj() {
     };
     _saveStationInfo = function(tx) {
         console.debug('start _saveStationInfo');
-        $.each(this.stationInsValue, function(i, value) {
+        $.each(stationInsValue, function(i, value) {
             try {
                 var update = 'update Stations set country=?, zip=?, reg_price=?, mid_price=?, pre_price=?, diesel_price=?, \
                             reg_date=?, mid_date=?, pre_date=?, diesel_date=?, address=?, diesel=?, \
                             lat=?, lng=?, station=?, region=?, city=?, distance=?, load_date=? \
                             where id = ?';
-                //console.debug(update);
+                console.debug('update: ' + value.id);
                 tx.executeSql(update, [value.country, value.zip, value.reg_price, value.mid_price, value.pre_price, value.diesel_price, value.reg_date, value.mid_date, value.pre_date, value.diesel_date, value.address, value.diesel, value.lat, value.lng, value.station, value.region, value.city, value.distance, new Date(Date.now()), value.id], updateStationSuccess, fail);
             } catch (err) {
                 console.error('saveStationInfo error... ' + err.message);
@@ -64,17 +68,17 @@ function gasBoyDBObj() {
         });
     };
     _savePriceInfo = function(tx) {
-        console.debug('start _savePriceInfo');
-        $.each(this.priceInsValue, function(i, value) {
-            try {
+        console.debug('start _savePriceInfo' + priceInsValue);
+        try {
+            $.each(priceInsValue, function(i, value) {
                 var update = 'Update Prices set price=?, readDate=?, load_date=? \
                              where location = ?';
-                //console.debug(update);
+                console.debug('insert: ' + value.LocationName);
                 tx.executeSql(update, [value.Price, value.ReadDate, new Date(Date.now()), value.LocationName], updatePriceSuccess, fail);
-            } catch (err) {
-                console.error('_savePriceInfo error... ' + err.message);
-            }
-        });
+            });
+        } catch (err) {
+            console.error('_savePriceInfo error... ' + err.message);
+        }
     };
     success = function(ex, results) {
         console.info('Success...' + results.rowsAffected);
@@ -119,7 +123,7 @@ function gasBoyDBObj() {
             console.debug('station: ' + results.rows.item(i).station);
         }
         console.debug('StationResults.length: ' + StationResults.length);
-        CallBack( StationResults );
+        CallBack(StationResults);
     };
     dateConvert = function(strDate) {
         try {
@@ -139,6 +143,7 @@ function gasBoyDBObj() {
             //console.debug(insert);
             $.each(stationInsValue, function(i, value) {
                 try {
+                    console.debug('insert: ' + value.id);
                     tx.executeSql(insert, [value.country, value.zip, value.reg_price, value.mid_price, value.pre_price, value.diesel_price, value.reg_date, value.mid_date, value.pre_date, value.diesel_date, value.address, value.diesel, value.id, value.lat, value.lng, value.station, value.region, value.city, value.distance, new Date(Date.now())], success, fail);
                 } catch (err) {
                     console.error('updateStationSuccess error... ' + err.message);
@@ -153,6 +158,7 @@ function gasBoyDBObj() {
             //console.debug(insert);
             $.each(priceInsValue, function(i, value) {
                 try {
+                    console.debug('insert: ' + value.LocationName);
                     tx.executeSql(insert, [(i + 1), value.LocationName, value.Price, value.ReadDate, new Date(Date.now())], success, fail);
                 } catch (err) {
                     console.error('updatePriceSuccess error... ' + err.message);
@@ -207,7 +213,7 @@ function gasBoyDBObj() {
     };
     saveStationInfo = function(sInfo) {
         console.debug('start saveStationInfo');
-        this.stationInsValue = sInfo;
+        stationInsValue = sInfo;
         if (_checkConnection(db)) {
             init();
         }
@@ -215,7 +221,7 @@ function gasBoyDBObj() {
     };
     savePriceInfo = function(pInfo) {
         console.debug('start savePriceInfo');
-        this.priceInsValue = pInfo;
+        priceInsValue = pInfo;
         if (_checkConnection(db)) {
             init();
         }

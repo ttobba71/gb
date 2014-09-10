@@ -40,9 +40,14 @@ function checkConnection() {
     states[Connection.CELL_4G] = 'Cell 4G connection';
     states[Connection.CELL] = 'Cell generic connection';
     states[Connection.NONE] = 'No network connection';
-    alert('Connection type: ' + states[networkState]);
+
+    //alert('Connection type: ' + states[networkState]);
+
+    if( networkState == Connection.NONE) return false;
+    else return true;
+
 }
-var isOnLine = true;
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -60,14 +65,14 @@ var app = {
         document.addEventListener("offline", this.onOffline, false);
     },
     onOnline: function() {
-        alert( 'online');
+        //alert( 'online');
         console.debug('onOnline...');
-        isOnLine = true;
+        setTimeout(isOnLine = checkConnection, 0);
     },
     onOffline: function() {
-        alert( 'offline');
+        //alert( 'offline');
         console.debug('onOffline');
-        isOnLine = false;
+        setTimeout(isOnLine = checkConnection, 0);
     },
     // deviceready Event Handler
     //
