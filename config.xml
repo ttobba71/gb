@@ -5,50 +5,51 @@
     <author email="jerry.abbott@emerson.com">Web Apps Development</author>
     <content src="index.html"/>
     <access origin="*"/>
-    <platform name="android">    
-        <feature name="Storage">
-         <param name="android-package" value="org.apache.cordova.Storage" />
-        </feature>
+    <platform name="android">   
+    <preference name="SplashScreen" value="default" /> 
+    <preference name="SplashScreenDelay" value="3000" /> 
         <feature name="App">
             <param name="android-package" value="org.apache.cordova.App" />
-        </feature>
-        <feature name="Device">
-            <param name="android-package" value="org.apache.cordova.device.Device" />
-        </feature>
-        <feature name="NetworkStatus">
-            <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
         </feature>
         <feature name="SplashScreen">
             <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
         </feature>
+            <feature name="NetworkStatus">
+        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
+        </feature>
         <feature name="LocalNotification">
             <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
         </feature>
-        <icon src="res/drawable/icon.png"/>
+            <feature name="Device">
+            <param name="android-package" value="org.apache.cordova.device.Device" />
+        </feature>
+        <icon src="www/img/icon.png"/>
     </platform>
     <platform name="ios">
         <preference name="iosPersistentFileLocation" value="Compatibility"/>
         <!-- <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />-->
         <feature name="Storage">
-            <param name="onload" value="CDVStorage"/>
+        <feature name="Notification">
+            <param name="ios-package" value="CDVNotification" />
+        </feature>
+            <param name="ios-package" value="CDVStorage"/>
+        </feature>
+        <feature name="Console">
+            <param name="ios-package" value="CDVLogger"/>
         </feature>
         <feature name="Device">
-            <param name="ios-package" value="CDVDevice"/>
-            <param name="onload" value="true"/>
+            <param name="ios-package" value="CDVDevice" />
         </feature>
-        <feature name="Local-Notification">
-            <param name="ios-package" value="Local-Notification"/>
+        <feature name="NetworkStatus">
+            <param name="ios-package" value="CDVConnection" />
         </feature>
-        <feature name="Logger">
-            <param name="ios-package" value="CDVLogger"/>
-            <param name="onload" value="true"/>
+        <feature name="Notification">
+            <param name="android-package" value="org.apache.cordova.Notification" />
         </feature>
         <icon src="www/img/icon.png"/>
     </platform>
     <preference name="loadUrlTimeoutValue" value="60000" />
     <preference name="Orientation" value="default"/>
-    <preference name="SplashScreen" value="Default"/>
-    <preference name="SplashScreenDelay" value="2000"/>
     <preference name="show-splash-screen-spinner" value="true"/>
     <preference name="auto-hide-splash-screen" value="false"/>
     <preference name="permissions" value="none"/>

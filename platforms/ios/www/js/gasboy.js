@@ -27,7 +27,7 @@ function getCurrentPosition() {
 
 function executeAsync(func) {
     console.log('executing... Async');
-    var rval = null;
+    var rval = true;
     try {
         setTimeout(rval = func, 0);
     } catch (e) {
@@ -38,7 +38,7 @@ function executeAsync(func) {
 
 function executeAsync(func, data) {
     console.log('executing... Async with data');
-    var rval = null;
+    var rval = true;
     try {
         setTimeout(rval = func(data), 0);
     } catch (e) {
@@ -195,7 +195,7 @@ function getSurroundingAreaData() {
                 updateLocalPriceTable(data.stations);
                 saveStationsLocally(stationsInfo.stations);
             } catch (err) {
-                //gbdb.getStationResults(updateLocalPriceTable);
+                gbdb.getStationResults(updateLocalPriceTable);
                 console.error('getSurroundingAreaData...error: ' + err.message);
             }
         },
@@ -267,7 +267,7 @@ $(document).on("pagecreate", "#main", function(event) {
     console.debug('main pagecreate');
     $(".ui-loader").hide();
     executeAsync(cancelAllNotifications);
-    RefreshData();
+    executeAsync(RefreshData);
     $('body').on('pagecontainertransition', function(event, ui) {
         console.debug('pagecontainertransition');
         //gets the id you programatically give to your page
@@ -286,7 +286,7 @@ $(document).on("pagecreate", "#main", function(event) {
     });
     $('#refreshDataBtn').on('tap', function(event) {
         console.debug('tapped refresh...');
-        RefreshData();
+        executeAsync(RefreshData);
     });
     $('#main').bind("swipe", function(event) {
         console.debug('swipe debug');

@@ -39,3 +39,53 @@ You could find it at the following address https://developer.apple.com/icloud/do
 2014-08-28 07:08:49.380 GasBoy[67253:70b] Resetting plugins due to page load.
 2014-08-28 07:08:49.622 GasBoy[67253:70b] Finished load of: file:///Users/jabbott/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/A67F321E-6B54-4E4D-B1D3-E70EC70384DF/GasBoy.app/www/index.html
 Terminating in response to SpringBoard's termination.
+2014-09-11 21:21:20.028 GasBoy[23849:70b] Multi-tasking -> Device: YES, App: YES
+2014-09-11 21:21:20.051 GasBoy[23849:70b] Unlimited access to network resources
+2014-09-11 21:21:20.054 GasBoy[23849:70b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-09-11 21:21:20.177 GasBoy[23849:70b] CDVPlugin class CDVSplashScreen (pluginName: splashscreen) does not exist.
+2014-09-11 21:21:20.177 GasBoy[23849:70b] [CDVTimer][splashscreen] 0.428021ms
+2014-09-11 21:21:20.178 GasBoy[23849:70b] [CDVTimer][TotalPluginStartup] 0.810981ms
+2014-09-11 21:21:20.517 GasBoy[23849:70b] Resetting plugins due to page load.
+2014-09-11 21:21:20.862 GasBoy[23849:70b] Finished load of: file:///Users/jabbott/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/A67F321E-6B54-4E4D-B1D3-E70EC70384DF/GasBoy.app/www/index.html
+2014-09-11 21:21:20.886 GasBoy[23849:70b] CDVPlugin class CDVDevice (pluginName: Device) does not exist.
+2014-09-11 21:21:20.886 GasBoy[23849:70b] ERROR: Plugin 'Device' not found, or is not a CDVPlugin. Check your plugin mapping in config.xml.
+2014-09-11 21:21:20.887 GasBoy[23849:70b] -[CDVCommandQueue executePending] [Line 158] FAILED pluginJSON = [
+  "Device567737017",
+  "Device",
+  "getDeviceInfo",
+  [
+
+  ]
+]
+Terminating in response to SpringBoard's termination.
+2014-09-11 21:40:40.960 GasBoy[25303:70b] Multi-tasking -> Device: YES, App: YES
+2014-09-11 21:40:40.969 GasBoy[25303:70b] Unlimited access to network resources
+2014-09-11 21:40:40.972 GasBoy[25303:70b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-09-11 21:40:40.987 GasBoy[25303:70b] CDVPlugin class CDVSplashScreen (pluginName: splashscreen) does not exist.
+2014-09-11 21:40:40.987 GasBoy[25303:70b] [CDVTimer][splashscreen] 0.391006ms
+2014-09-11 21:40:40.988 GasBoy[25303:70b] [CDVTimer][TotalPluginStartup] 0.767052ms
+2014-09-11 21:40:41.085 GasBoy[25303:70b] Resetting plugins due to page load.
+2014-09-11 21:40:41.745 GasBoy[25303:70b] Finished load of: file:///Users/jabbott/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/A67F321E-6B54-4E4D-B1D3-E70EC70384DF/GasBoy.app/www/index.html
+2014-09-11 21:40:41.803 GasBoy[25303:70b] CDVPlugin class CDVDevice (pluginName: Device) does not exist.
+2014-09-11 21:40:41.803 GasBoy[25303:70b] ERROR: Plugin 'Device' not found, or is not a CDVPlugin. Check your plugin mapping in config.xml.
+2014-09-11 21:40:41.803 GasBoy[25303:70b] -[CDVCommandQueue executePending] [Line 158] FAILED pluginJSON = [
+  "Device60762543",
+  "Device",
+  "getDeviceInfo",
+  [
+
+  ]
+]
+2014-09-11 21:44:32.454 GasBoy[25303:70b] Received memory warning.

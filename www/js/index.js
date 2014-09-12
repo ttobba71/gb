@@ -51,6 +51,7 @@ function checkConnection() {
 var app = {
     // Application Constructor
     initialize: function() {
+        console.debug('initialize');
         this.bindEvents();
     },
     // Bind Event Listeners
@@ -58,21 +59,25 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
+        console.debug('bindEvents...1');
+        console.log( 'test bind Events...');
         document.addEventListener('deviceready', this.onDeviceReady, false);
+          console.debug('bindEvents...2');
         document.addEventListener("resume", this.onResume, false);
+          console.debug('bindEvents...3');
         document.addEventListener("pause", this.onPause, false);
-        document.addEventListener("online", this.onOnline, false);
-        document.addEventListener("offline", this.onOffline, false);
+        //document.addEventListener("online", this.onOnline, false);
+        //document.addEventListener("offline", this.onOffline, false);
     },
     onOnline: function() {
         //alert( 'online');
         console.debug('onOnline...');
-        setTimeout(isOnLine = checkConnection, 0);
+        //setTimeout(isOnLine = checkConnection, 0);
     },
     onOffline: function() {
         //alert( 'offline');
         console.debug('onOffline');
-        setTimeout(isOnLine = checkConnection, 0);
+        //setTimeout(isOnLine = checkConnection, 0);
     },
     // deviceready Event Handler
     //
@@ -80,7 +85,9 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        checkConnection();
+                console.log( 'test deviceready...');
+                navigator.notification.alert('Alert Test...'); 
+                navigator.notification.vibrate(2500); 
         setTimeout(function() {
             navigator.splashscreen.hide();
         }, 2000);
@@ -94,6 +101,7 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+        console.debug('receivedEvent...');
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');

@@ -27,7 +27,7 @@ function getCurrentPosition() {
 
 function executeAsync(func) {
     console.log('executing... Async');
-    var rval = null;
+    var rval = true;
     try {
         setTimeout(rval = func, 0);
     } catch (e) {
@@ -38,7 +38,7 @@ function executeAsync(func) {
 
 function executeAsync(func, data) {
     console.log('executing... Async with data');
-    var rval = null;
+    var rval = true;
     try {
         setTimeout(rval = func(data), 0);
     } catch (e) {
